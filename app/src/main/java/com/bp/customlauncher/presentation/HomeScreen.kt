@@ -1,26 +1,32 @@
+package com.bp.customlauncher.presentation
+
+import android.widget.Toast
+import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.ui.input.pointer.pointerInput
+import com.bp.customlauncher.MainViewModel
 import org.koin.androidx.compose.koinViewModel
-import org.koin.java.KoinJavaComponent.inject
 
 @Composable
 fun HomeScreen(
-    homeViewModel: HomeViewModel = koinViewModel()
+    mainViewModel: MainViewModel = koinViewModel()
 ) {
-    val appList = homeViewModel.getAppList()
+    val homeAppsState = mainViewModel.homeState.collectAsState()
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        appList.forEach {
+        homeAppsState.value.forEach {
             item {
                 Text(it.name)
             }
